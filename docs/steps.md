@@ -63,16 +63,20 @@
 	6j. Testa sparad analys via Swagger ✅
 	6k. Verifiera sparad analys i databasen ✅
 
-7. Scheduler
-	7a. Bestäm schemaläggningsteknik
-	7b. Skapa scheduler/worker som kan köras automatiskt
-	7c. Kör fetcher enligt schema
-	7d. Kör AI-analys efter fetcher
-	7e. Säkerställ att samma logik används som vid manuell trigger
-	7f. Lägg in skydd mot parallella körningar
-	7g. Lägg in enkel konfiguration för körintervall
-	7h. Testa scheduler lokalt
-	7i. Förbered körning i Azure eller annan billig hosting
-8. E-post/alerts
-9. Frontend/Admin för aktier
-10. Loggning + felhantering
+7. Azure deployment
+	7a. Skapa Azure SQL Database för AlphaMind ✅
+	7b. Koppla backend lokalt till Azure SQL ✅
+	7c. Kör EF Core migration mot Azure SQL ✅
+	7d. Verifiera att databasen funkar (lokalt mot Azure) ✅
+	7e. Skapa Azure App Service för backend
+	7f. Publicera AlphaMind.Api till Azure
+	7g. Lägg in connection string i Azure App Service config
+	7h. Lägg in Finnhub och OpenAI keys som App Settings
+	7i. Testa Swagger i Azure
+	7j. Testa /api/fetcher/run i Azure
+	7k. Testa /api/analysis/run i Azure
+	
+8. Scheduler
+9. E-post/alerts
+10. Frontend/Admin för aktier
+11. Loggning + felhantering
