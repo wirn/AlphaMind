@@ -36,6 +36,7 @@ Log/
 secrets.json
 appsettings.Local.json
 appsettings.*.local.json
+local.settings.json
 .env
 .env.*
 !.env.example

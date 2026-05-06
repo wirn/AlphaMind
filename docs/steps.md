@@ -68,15 +68,26 @@
 	7b. Koppla backend lokalt till Azure SQL ✅
 	7c. Kör EF Core migration mot Azure SQL ✅
 	7d. Verifiera att databasen funkar (lokalt mot Azure) ✅
-	7e. Skapa Azure App Service för backend
-	7f. Publicera AlphaMind.Api till Azure
-	7g. Lägg in connection string i Azure App Service config
-	7h. Lägg in Finnhub och OpenAI keys som App Settings
-	7i. Testa Swagger i Azure
-	7j. Testa /api/fetcher/run i Azure
-	7k. Testa /api/analysis/run i Azure
+	7e. Skapa Azure App Service för backend ✅
+	7f. Publicera AlphaMind.Api till Azure ✅
+	7g. Lägg in connection string i Azure App Service config ✅
+	7h. Lägg in Finnhub och OpenAI keys som App Settings ✅
+	7i. Testa Swagger i Azure ✅
+	7j. Testa /api/fetcher/run i Azure ✅
+	7k. Testa /api/analysis/run i Azure ✅
 	
 8. Scheduler
+	8a. Skapa skyddad scheduler-endpoint med API-key ✅
+	8b. Dela upp scheduler i run-fetcher och run-analysis ✅
+	8c. Testa run-fetcher i Azure ✅
+	8d. Testa run-analysis i Azure med maxStocks/offset ✅
+	8e. Skapa Azure Function Timer Trigger ✅
+	8f. Lägg API base URL och scheduler-key i Function config
+	8g. Publicera Function App till Azure
+	8h. Kör fetcher en gång per dag
+	8i. Kör analys i batchar med maxStocks/offset
+	8j. Verifiera att FetcherRuns och StockAnalyses uppdateras automatiskt
+	
 9. E-post/alerts
 10. Frontend/Admin för aktier
 11. Loggning + felhantering

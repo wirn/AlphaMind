@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text;
 using AlphaMind.Api.Data;
+using AlphaMind.Api.Entities;
 using AlphaMind.Api.Integrations.OpenAI;
 using AlphaMind.Api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,13 @@ public class StockAnalysisPreviewService(
             throw new InvalidOperationException($"Stock '{normalizedTicker}' was not found.");
         }
 
+        return await AnalyzeAsync(stock, cancellationToken);
+    }
+
+    public async Task<StockAnalysisPreviewResult> AnalyzeAsync(
+        Stock stock,
+        CancellationToken cancellationToken = default)
+    {
         var newsItems = await dbContext.StockNews
             .Where(news => news.StockId == stock.Id)
             .OrderByDescending(news => news.PublishedAt)
@@ -62,7 +70,7 @@ public class StockAnalysisPreviewService(
         };
     }
 
-    private static string BuildPrompt(string ticker, string stockName, IReadOnlyList<Entities.StockNews> newsItems)
+    private static string BuildPrompt(string ticker, string stockName, IReadOnlyList<StockNews> newsItems)
     {
         var builder = new StringBuilder();
         builder.AppendLine("Analyze the recent stock news context below for a stock analysis preview.");

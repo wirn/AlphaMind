@@ -25,6 +25,23 @@ public class StockAnalysisRunService(
             throw new InvalidOperationException($"Stock '{preview.Ticker}' was not found.");
         }
 
+        return await SaveAsync(stock, preview, cancellationToken);
+    }
+
+    public async Task<StockAnalysisResponse> RunForStockAsync(
+        Stock stock,
+        CancellationToken cancellationToken = default)
+    {
+        var preview = await previewService.AnalyzeAsync(stock, cancellationToken);
+
+        return await SaveAsync(stock, preview, cancellationToken);
+    }
+
+    private async Task<StockAnalysisResponse> SaveAsync(
+        Stock stock,
+        StockAnalysisPreviewResult preview,
+        CancellationToken cancellationToken)
+    {
         var now = DateTime.UtcNow;
         var analysis = new StockAnalysis
         {
