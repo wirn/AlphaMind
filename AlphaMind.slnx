@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/backend/">
+    <Project Path="backend/AlphaMind.Api/AlphaMind.Api.csproj" />
+  </Folder>
+  <Folder Name="/functions/">
+    <Project Path="functions/AlphaMind.Functions/AlphaMind.Functions.csproj" />
+  </Folder>
+</Solution>

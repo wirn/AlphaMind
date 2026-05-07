@@ -82,6 +82,9 @@ public class StockAnalysisPreviewService(
         builder.AppendLine("Direction must be positive, negative, neutral, or mixed.");
         builder.AppendLine("If the provided context is weak, stale, repetitive, or insufficient, say so in the summary, use lower ConfidenceScore, and keep ExpectedMove near 0 unless the provided news clearly supports direction.");
         builder.AppendLine("Return strict JSON only. Do not include markdown, comments, or explanatory text outside JSON.");
+        builder.AppendLine("The JSON field summary must be written in Swedish.");
+        builder.AppendLine("The JSON arrays opportunities and risks must also be written in Swedish.");
+        builder.AppendLine("Keep the JSON property names in English.");
         builder.AppendLine(CultureInfo.InvariantCulture, $"Ticker: {ticker}");
         builder.AppendLine(CultureInfo.InvariantCulture, $"Company: {stockName}");
         builder.AppendLine("Latest news:");

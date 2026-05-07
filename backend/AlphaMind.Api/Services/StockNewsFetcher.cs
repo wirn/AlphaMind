@@ -40,6 +40,7 @@ public class StockNewsFetcher(
             var from = to.AddDays(-7);
             var successfulStocks = 0;
             var errorMessages = new List<string>();
+            var seenNewsKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             var stocks = await dbContext.Stocks
                 .Where(stock => stock.IsActive && stock.Exchange != "Stockholm")
                 .OrderBy(stock => stock.SortOrder)
@@ -63,9 +64,9 @@ public class StockNewsFetcher(
                     foreach (var newsItem in processedNewsItems)
                     {
                         var externalId = newsItem.Id.ToString(CultureInfo.InvariantCulture);
-                        var source = TrimToMaxLength(newsItem.Source, 100);
-                        var headline = TrimToMaxLength(newsItem.Headline, 500);
-                        var url = TrimToMaxLength(newsItem.Url, 1000);
+                        var source = TrimToMaxLength(newsItem.Source?.Trim(), 100);
+                        var headline = TrimToMaxLength(newsItem.Headline?.Trim(), 500);
+                        var url = TrimToMaxLength(newsItem.Url?.Trim(), 1000);
 
                         if (string.IsNullOrWhiteSpace(externalId) ||
                             string.IsNullOrWhiteSpace(source) ||
@@ -77,8 +78,17 @@ public class StockNewsFetcher(
                             continue;
                         }
 
+                        var newsKey = CreateNewsKey(externalId, source);
+                        if (!seenNewsKeys.Add(newsKey))
+                        {
+                            run.DuplicatesSkipped++;
+                            continue;
+                        }
+
                         var alreadyExists = await dbContext.StockNews
-                            .AnyAsync(news => news.ExternalId == externalId, cancellationToken);
+                            .AnyAsync(
+                                news => news.ExternalId == externalId && news.Source == source,
+                                cancellationToken);
 
                         if (alreadyExists)
                         {
@@ -194,6 +204,11 @@ public class StockNewsFetcher(
             logger.LogError(exception, "{FailureMessage}", failureMessage);
             return false;
         }
+    }
+
+    private static string CreateNewsKey(string externalId, string source)
+    {
+        return $"{externalId}\u001F{source}";
     }
 
     private static void AddErrorMessage(List<string> errorMessages, string ticker, string message)

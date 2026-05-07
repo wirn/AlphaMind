@@ -185,6 +185,7 @@ app.MapPost("/api/scheduler/run-fetcher", async (
     HttpContext httpContext,
     IConfiguration configuration,
     StockNewsFetcher fetcher,
+    ILoggerFactory loggerFactory,
     CancellationToken cancellationToken) =>
 {
     if (!IsSchedulerAuthorized(httpContext, configuration))
@@ -192,7 +193,20 @@ app.MapPost("/api/scheduler/run-fetcher", async (
         return Results.Unauthorized();
     }
 
+    var logger = loggerFactory.CreateLogger("AlphaMind.Scheduler.RunFetcher");
+    logger.LogInformation("scheduler run-fetcher started");
+    logger.LogInformation("AI analysis not executed by this endpoint");
+
     var run = await fetcher.FetchAsync(cancellationToken);
+
+    logger.LogInformation(
+        "news fetch completed with status {Status}. StocksChecked={StocksChecked}, NewsFetched={NewsFetched}, NewNewsSaved={NewNewsSaved}, DuplicatesSkipped={DuplicatesSkipped}, ErrorsCount={ErrorsCount}",
+        run.Status,
+        run.StocksChecked,
+        run.NewsFetched,
+        run.NewNewsSaved,
+        run.DuplicatesSkipped,
+        run.ErrorsCount);
 
     return Results.Ok(ToFetcherRunResponse(run));
 })

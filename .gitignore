@@ -84,3 +84,6 @@ notes.md
 **/Properties/PublishProfiles/
 **/Properties/ServiceDependencies/
 **/Properties/serviceDependencies*.json
+
+**/Properties/PublishProfiles/*.pubxml
+**/Properties/PublishProfiles/*.pubxml.user
