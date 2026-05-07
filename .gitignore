@@ -80,3 +80,7 @@ Desktop.ini
 $RECYCLE.BIN/
 
 notes.md
+
+**/Properties/PublishProfiles/
+**/Properties/ServiceDependencies/
+**/Properties/serviceDependencies*.json

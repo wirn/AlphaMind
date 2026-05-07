@@ -25,7 +25,14 @@ public class StockNewsFetcher(
         };
 
         dbContext.FetcherRuns.Add(run);
-        await dbContext.SaveChangesAsync(cancellationToken);
+        var canPersistFetcherRun = await TrySaveChangesAsync(
+            "Failed to save initial fetcher run.",
+            cancellationToken);
+
+        if (!canPersistFetcherRun)
+        {
+            dbContext.Entry(run).State = EntityState.Detached;
+        }
 
         try
         {
@@ -48,6 +55,7 @@ public class StockNewsFetcher(
                 {
                     var newsItems = await finnhubClient.GetCompanyNewsAsync(stock.Ticker, from, to, cancellationToken);
                     run.NewsFetched += newsItems.Count;
+                    var newNewsSavedBeforeStock = run.NewNewsSaved;
                     var processedNewsItems = newsItems
                         .OrderByDescending(newsItem => newsItem.DateTime)
                         .Take(MaxNewsItemsPerStock);
@@ -93,7 +101,24 @@ public class StockNewsFetcher(
                     }
 
                     successfulStocks++;
-                    await dbContext.SaveChangesAsync(cancellationToken);
+                    if (!await TrySaveChangesAsync(
+                        $"Failed to save news for {stock.Ticker}.",
+                        cancellationToken))
+                    {
+                        run.ErrorsCount++;
+                        AddErrorMessage(errorMessages, stock.Ticker, "Failed to save news to database.");
+                        run.NewNewsSaved = newNewsSavedBeforeStock;
+                        dbContext.ChangeTracker.Clear();
+
+                        if (canPersistFetcherRun)
+                        {
+                            dbContext.FetcherRuns.Attach(run);
+                            run.Status = "Running";
+                            await TrySaveChangesAsync(
+                                $"Failed to save fetcher run after stock persistence failure for {stock.Ticker}.",
+                                cancellationToken);
+                        }
+                    }
                 }
                 catch (OperationCanceledException)
                 {
@@ -105,9 +130,15 @@ public class StockNewsFetcher(
                     run.ErrorsCount++;
                     AddErrorMessage(errorMessages, stock.Ticker, exception.Message);
                     dbContext.ChangeTracker.Clear();
-                    dbContext.FetcherRuns.Attach(run);
-                    run.Status = "Running";
-                    await dbContext.SaveChangesAsync(cancellationToken);
+
+                    if (canPersistFetcherRun)
+                    {
+                        dbContext.FetcherRuns.Attach(run);
+                        run.Status = "Running";
+                        await TrySaveChangesAsync(
+                            $"Failed to save fetcher run after fetch failure for {stock.Ticker}.",
+                            cancellationToken);
+                    }
                 }
 
                 if (index < stocks.Count - 1)
@@ -134,8 +165,35 @@ public class StockNewsFetcher(
             run.ErrorsCount++;
         }
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        if (canPersistFetcherRun)
+        {
+            await TrySaveChangesAsync("Failed to save final fetcher run status.", cancellationToken);
+        }
+        else
+        {
+            dbContext.FetcherRuns.Add(run);
+            await TrySaveChangesAsync("Failed to save final fetcher run after initial logging failure.", cancellationToken);
+        }
+
         return run;
+    }
+
+    private async Task<bool> TrySaveChangesAsync(string failureMessage, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await dbContext.SaveChangesAsync(cancellationToken);
+            return true;
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "{FailureMessage}", failureMessage);
+            return false;
+        }
     }
 
     private static void AddErrorMessage(List<string> errorMessages, string ticker, string message)
