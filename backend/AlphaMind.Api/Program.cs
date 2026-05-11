@@ -33,11 +33,13 @@ builder.Services.AddScoped<StockAnalysisRunService>();
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("FrontendOrigins", policy =>
+    options.AddPolicy("Frontend", policy =>
     {
-        // Add the deployed frontend origin here when the frontend is hosted.
         policy
-            .WithOrigins("http://localhost:5173", "http://127.0.0.1:5173")
+            .WithOrigins(
+                "http://localhost:5173",
+                "http://127.0.0.1:5173",
+                "https://happy-ocean-04d23e203.7.azurestaticapps.net")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -59,7 +61,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("FrontendOrigins");
+app.UseCors("Frontend");
 
 app.MapControllers();
 
