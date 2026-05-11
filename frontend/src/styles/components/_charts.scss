@@ -1,0 +1,117 @@
+@use '../abstracts/variables' as *;
+
+.score-ring {
+  display: grid;
+  width: 112px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    conic-gradient($color-cyan var(--score), rgba($color-cyan, 0.1) 0),
+    radial-gradient(circle, rgba($color-cyan, 0.18), transparent 60%);
+  box-shadow: 0 0 30px rgba($color-cyan, 0.22);
+}
+
+.score-ring__inner {
+  display: grid;
+  width: 78px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background: $color-bg;
+}
+
+.score-ring__inner strong {
+  font-size: 1.35rem;
+}
+
+.score-ring__inner span,
+.confidence-bar__label span {
+  color: $color-muted;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.confidence-bar {
+  display: grid;
+  gap: 10px;
+}
+
+.confidence-bar__label {
+  display: flex;
+  justify-content: space-between;
+}
+
+.confidence-bar__track,
+.expected-move__scale {
+  position: relative;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.confidence-bar__track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, $color-pink, $color-cyan, $color-green);
+  box-shadow: 0 0 18px rgba($color-green, 0.28);
+}
+
+.expected-move {
+  display: grid;
+  gap: 8px;
+}
+
+.expected-move__value {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.expected-move.is-positive .expected-move__value {
+  color: $color-green;
+}
+
+.expected-move.is-negative .expected-move__value {
+  color: $color-red;
+}
+
+.expected-move.is-neutral .expected-move__value {
+  color: $color-amber;
+}
+
+.expected-move__scale {
+  overflow: visible;
+  background: linear-gradient(90deg, rgba($color-red, 0.5), rgba($color-amber, 0.36) 18%, rgba($color-green, 0.52));
+}
+
+.expected-move__zero {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  left: 16.666%;
+  width: 2px;
+  background: rgba($color-text, 0.7);
+}
+
+.expected-move__marker {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border: 2px solid $color-text;
+  border-radius: 50%;
+  background: $color-bg;
+  box-shadow: 0 0 18px currentColor;
+  transform: translate(-50%, -50%);
+}
+
+.expected-move__ticks {
+  display: flex;
+  justify-content: space-between;
+  color: $color-muted;
+  font-size: 0.75rem;
+}
+

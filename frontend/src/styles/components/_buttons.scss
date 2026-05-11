@@ -1,0 +1,18 @@
+@use '../abstracts/variables' as *;
+
+.button {
+  min-height: 42px;
+  padding: 0 18px;
+  color: $color-text;
+  border: 1px solid rgba($color-cyan, 0.32);
+  border-radius: $radius-sm;
+  background: rgba($color-cyan, 0.08);
+}
+
+.button--primary {
+  color: #001014;
+  font-weight: 800;
+  background: linear-gradient(135deg, $color-cyan, $color-green);
+  box-shadow: 0 0 22px rgba($color-cyan, 0.25);
+}
+

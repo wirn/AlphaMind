@@ -1,0 +1,4 @@
+@function alpha-neon($color, $alpha) {
+  @return rgba($color, $alpha);
+}
+

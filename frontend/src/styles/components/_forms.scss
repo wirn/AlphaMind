@@ -1,0 +1,30 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field span {
+  color: $color-muted;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
+  color: $color-text;
+  background: rgba(2, 6, 13, 0.72);
+  border: 1px solid rgba($color-cyan, 0.18);
+  border-radius: $radius-sm;
+}
+
+.field input:focus,
+.field select:focus {
+  @include focus-ring;
+}
+

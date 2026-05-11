@@ -14,7 +14,7 @@ public class DailyAlphaMindScheduler(
 
     [Function(nameof(DailyAlphaMindScheduler))]
     public async Task RunAsync(
-        [TimerTrigger("0 40 13 * * *")] TimerInfo timerInfo,
+        [TimerTrigger("0 40 13 * * 1-5")] TimerInfo timerInfo,
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Daily AlphaMind scheduler started at {StartedAt:u}.", DateTime.UtcNow);

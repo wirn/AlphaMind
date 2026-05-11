@@ -30,6 +30,18 @@ builder.Services.AddHttpClient<IOpenAiClient, OpenAiClient>(client =>
 builder.Services.AddScoped<StockNewsFetcher>();
 builder.Services.AddScoped<StockAnalysisPreviewService>();
 builder.Services.AddScoped<StockAnalysisRunService>();
+builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendOrigins", policy =>
+    {
+        // Add the deployed frontend origin here when the frontend is hosted.
+        policy
+            .WithOrigins("http://localhost:5173", "http://127.0.0.1:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
@@ -46,6 +58,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("FrontendOrigins");
+
+app.MapControllers();
 
 app.MapGet("/api/debug/finnhub-news", async (
     string? ticker,

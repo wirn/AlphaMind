@@ -1,0 +1,86 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 22px;
+  border-right: 1px solid rgba($color-cyan, 0.13);
+  background: rgba(2, 6, 13, 0.84);
+  backdrop-filter: blur(18px);
+}
+
+.sidebar__brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 34px;
+}
+
+.sidebar__brand span,
+.sidebar__status span {
+  display: block;
+  color: $color-muted;
+  font-size: 0.78rem;
+}
+
+.sidebar__brand-mark {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  color: $color-cyan;
+  border: 1px solid rgba($color-cyan, 0.38);
+  border-radius: 14px;
+  background: rgba($color-cyan, 0.1);
+  box-shadow: $shadow-neon;
+}
+
+.sidebar__nav {
+  display: grid;
+  gap: 8px;
+}
+
+.sidebar__nav-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  color: $color-muted;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: $radius-sm;
+}
+
+.sidebar__nav-item:hover,
+.sidebar__nav-item.is-active {
+  color: $color-text;
+  background: rgba($color-cyan, 0.1);
+  @include neon-border($color-cyan);
+}
+
+.sidebar__status {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  margin-top: auto;
+  border: 1px solid rgba($color-green, 0.26);
+  border-radius: $radius-md;
+  background: rgba($color-green, 0.08);
+}
+
+.pulse-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: $color-green;
+  box-shadow: 0 0 16px $color-green;
+}
+

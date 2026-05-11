@@ -1,0 +1,57 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.analysis-groups {
+  display: grid;
+  gap: 30px;
+}
+
+.analysis-group__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 26px 0 14px;
+  color: $color-muted;
+}
+
+.analysis-group__header h2 {
+  color: $color-text;
+}
+
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.analysis-grid--wide {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.settings-panel {
+  @include glass-panel;
+  display: grid;
+  gap: 16px;
+  max-width: 760px;
+  padding: 20px;
+  border-radius: $radius-md;
+}
+
+.settings-panel div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.settings-panel span {
+  color: $color-muted;
+}
+

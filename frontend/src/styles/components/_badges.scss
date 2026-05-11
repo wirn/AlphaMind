@@ -1,0 +1,49 @@
+@use '../abstracts/variables' as *;
+
+.ticker-chip,
+.direction-badge,
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.ticker-chip {
+  margin-bottom: 8px;
+  color: $color-cyan;
+  background: rgba($color-cyan, 0.1);
+  border: 1px solid rgba($color-cyan, 0.28);
+}
+
+.direction-badge--positive,
+.status-pill.is-on {
+  color: $color-green;
+  background: rgba($color-green, 0.1);
+}
+
+.direction-badge--negative {
+  color: $color-red;
+  background: rgba($color-red, 0.12);
+}
+
+.direction-badge--neutral {
+  color: $color-amber;
+  background: rgba($color-amber, 0.12);
+}
+
+.direction-badge--mixed {
+  color: $color-pink;
+  background: rgba($color-pink, 0.12);
+}
+
+.status-pill {
+  color: $color-muted;
+  background: rgba(255, 255, 255, 0.06);
+}
+

@@ -1,0 +1,48 @@
+@use '../abstracts/variables' as *;
+
+.app-shell {
+  display: grid;
+  grid-template-columns: $sidebar-width minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.app-shell__main {
+  min-width: 0;
+  padding: 32px;
+}
+
+.page-header {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.page-header p {
+  max-width: 720px;
+  margin-top: 14px;
+}
+
+.page-header__meta,
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  color: $color-cyan;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  margin-bottom: 12px;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.page-header__meta {
+  flex: 0 0 auto;
+  padding: 9px 12px;
+  border: 1px solid rgba($color-cyan, 0.28);
+  border-radius: $radius-sm;
+  background: rgba($color-cyan, 0.08);
+}
+

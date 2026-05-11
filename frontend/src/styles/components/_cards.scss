@@ -1,0 +1,115 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.analysis-card,
+.metric-tile {
+  @include glass-panel;
+  border-radius: $radius-lg;
+}
+
+.analysis-card {
+  display: grid;
+  gap: 18px;
+  padding: 20px;
+}
+
+.analysis-card__header,
+.analysis-card__footer {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.analysis-card__summary {
+  min-height: 78px;
+}
+
+.analysis-card__metrics {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+}
+
+.analysis-card__metrics .expected-move {
+  grid-column: 1 / -1;
+}
+
+.analysis-card__lists {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.analysis-card__lists div {
+  padding: 12px;
+  border: 1px solid rgba($color-cyan, 0.12);
+  border-radius: $radius-sm;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.analysis-card__lists span {
+  display: block;
+  margin-bottom: 8px;
+  color: $color-cyan;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.analysis-card__lists li {
+  margin-left: 16px;
+  color: $color-muted;
+  line-height: 1.45;
+}
+
+.analysis-card__footer {
+  color: $color-muted;
+  font-size: 0.86rem;
+}
+
+.analysis-card__footer span {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.metric-tile {
+  padding: 18px;
+}
+
+.metric-tile span {
+  display: block;
+  margin-bottom: 10px;
+  color: $color-muted;
+}
+
+.metric-tile strong {
+  font-size: 1.8rem;
+}
+
+.metric-tile--cyan {
+  @include neon-border($color-cyan);
+}
+
+.metric-tile--green {
+  @include neon-border($color-green);
+}
+
+.metric-tile--pink {
+  @include neon-border($color-pink);
+}
+
+.metric-tile--amber {
+  @include neon-border($color-amber);
+}
+
+.status-callout {
+  @include glass-panel;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  color: $color-muted;
+  border-color: rgba($color-amber, 0.28);
+  border-radius: $radius-sm;
+  box-shadow: 0 0 18px rgba($color-amber, 0.08);
+}
