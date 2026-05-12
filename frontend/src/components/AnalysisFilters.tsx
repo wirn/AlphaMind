@@ -1,11 +1,20 @@
-import type { AnalysisFilters as AnalysisFiltersType, Direction } from '../types/stock';
+import type {
+  AnalysisFilters as AnalysisFiltersType,
+  Direction,
+} from "../types/stock";
 
 interface AnalysisFiltersProps {
   filters: AnalysisFiltersType;
   onChange: (filters: AnalysisFiltersType) => void;
 }
 
-const directions: Array<Direction | 'all'> = ['all', 'positive', 'negative', 'neutral', 'mixed'];
+const directions: Array<Direction | "all"> = [
+  "all",
+  "positive",
+  "negative",
+  "neutral",
+  "mixed",
+];
 
 export function AnalysisFilters({ filters, onChange }: AnalysisFiltersProps) {
   return (
@@ -15,10 +24,11 @@ export function AnalysisFilters({ filters, onChange }: AnalysisFiltersProps) {
         <input
           value={filters.search}
           placeholder="Ticker or company"
-          onChange={(event) => onChange({ ...filters, search: event.target.value })}
+          onChange={(event) =>
+            onChange({ ...filters, search: event.target.value })
+          }
         />
       </label>
-
       <RangeField
         label="Impact"
         min={0}
@@ -28,7 +38,6 @@ export function AnalysisFilters({ filters, onChange }: AnalysisFiltersProps) {
         onMinChange={(impactMin) => onChange({ ...filters, impactMin })}
         onMaxChange={(impactMax) => onChange({ ...filters, impactMax })}
       />
-
       <RangeField
         label="Confidence"
         min={0}
@@ -38,7 +47,6 @@ export function AnalysisFilters({ filters, onChange }: AnalysisFiltersProps) {
         onMinChange={(confidenceMin) => onChange({ ...filters, confidenceMin })}
         onMaxChange={(confidenceMax) => onChange({ ...filters, confidenceMax })}
       />
-
       <RangeField
         label="Expected Move"
         min={-10}
@@ -48,19 +56,23 @@ export function AnalysisFilters({ filters, onChange }: AnalysisFiltersProps) {
         onMinChange={(moveMin) => onChange({ ...filters, moveMin })}
         onMaxChange={(moveMax) => onChange({ ...filters, moveMax })}
       />
-
       <label className="field">
         <span>Direction</span>
         <select
           value={filters.direction}
           onChange={(event) =>
-            onChange({ ...filters, direction: event.target.value as AnalysisFiltersType['direction'] })
+            onChange({
+              ...filters,
+              direction: event.target.value as AnalysisFiltersType["direction"],
+            })
           }
         >
           {directions.map((direction) => (
-            <option key={direction} value={direction}>
-              {direction}
-            </option>
+            <div>
+              <option key={direction} value={direction}>
+                {direction}
+              </option>
+            </div>
           ))}
         </select>
       </label>
@@ -78,7 +90,15 @@ interface RangeFieldProps {
   onMaxChange: (value: number) => void;
 }
 
-function RangeField({ label, min, max, minValue, maxValue, onMinChange, onMaxChange }: RangeFieldProps) {
+function RangeField({
+  label,
+  min,
+  max,
+  minValue,
+  maxValue,
+  onMinChange,
+  onMaxChange,
+}: RangeFieldProps) {
   return (
     <div className="field field--range">
       <span>{label}</span>
@@ -101,4 +121,3 @@ function RangeField({ label, min, max, minValue, maxValue, onMinChange, onMaxCha
     </div>
   );
 }
-

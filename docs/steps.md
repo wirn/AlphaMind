@@ -77,17 +77,141 @@
 	7k. Testa /api/analysis/run i Azure ✅
 	
 8. Scheduler
-	8a. Skapa skyddad scheduler-endpoint med API-key ✅
-	8b. Dela upp scheduler i run-fetcher och run-analysis ✅
-	8c. Testa run-fetcher i Azure ✅
-	8d. Testa run-analysis i Azure med maxStocks/offset ✅
-	8e. Skapa Azure Function Timer Trigger ✅
-	8f. Lägg API base URL och scheduler-key i Function config
-	8g. Publicera Function App till Azure
-	8h. Kör fetcher en gång per dag
-	8i. Kör analys i batchar med maxStocks/offset
-	8j. Verifiera att FetcherRuns och StockAnalyses uppdateras automatiskt
-	
+    8a. Skapa skyddad scheduler-endpoint med API-key ✅
+    8b. Dela upp scheduler i run-fetcher och run-analysis ✅
+    8c. Testa run-fetcher i Azure ✅
+    8d. Testa run-analysis i Azure med maxStocks/offset ✅
+    8e. Skapa Azure Function Timer Trigger ✅
+    8f. Lägg API base URL och scheduler-key i Function config ✅
+    8g. Publicera Function App till Azure ✅
+    8h. Kör fetcher en gång per dag ✅
+    8i. Kör analys i batchar med maxStocks/offset ✅
+    8j. Verifiera att FetcherRuns och StockAnalyses uppdateras automatiskt ✅
+    8k. Lägg till tydlig loggning i Function App för varje steg ✅
+    8l. Lägg till felhantering så analys inte avbryts helt om en batch failar ✅
+    8m. Dokumentera scheduler-konfiguration i README/appsettings-exempel ⬜
+
 9. E-post/alerts
+    9a. Bestäm e-postleverantör
+        - Förslag: SendGrid, Azure Communication Services Email eller SMTP
+        - Välj billig/gratis lösning för hobbyprojekt
+
+    9b. Skapa konfiguration för alerts
+        - AlertSettings:Enabled
+        - AlertSettings:MinImpactScore, t.ex. 80
+        - AlertSettings:Recipients
+        - AlertSettings:SenderEmail
+        - AlertSettings:SenderName
+
+    9c. Skapa datamodell för skickade alerts
+        - AlertNotification
+        - StockAnalysisId
+        - StockId
+        - Ticker
+        - RecipientEmail
+        - ImpactScore
+        - Direction
+        - SentAt
+        - Status
+        - ErrorMessage
+        - CreatedAt
+
+    9d. Skapa EF migration för AlertNotifications
+
+    9e. Skapa alert-evaluator
+        - Hämtar senaste StockAnalyses
+        - Filtrerar på impactScore >= threshold
+        - Undviker duplicerade utskick
+        - Tar hänsyn till direction om du vill, t.ex. positive/negative/mixed
+
+    9f. Skapa email-sender-service
+        - Interface: IEmailSender
+        - Implementation: vald leverantör
+        - Hantera disabled-läge för lokal utveckling
+
+    9g. Skapa e-postmall
+        - Ämne: AlphaMind alert: NVDA impact score 92
+        - Innehåll:
+          - Ticker och bolagsnamn
+          - Impact score
+          - Confidence score
+          - Direction
+          - Expected move
+          - Svensk sammanfattning
+          - Opportunities
+          - Risks
+          - Disclaimer: inte finansiell rådgivning
+
+    9h. Skapa skyddad endpoint
+        - POST /api/alerts/run
+        - Skyddas med samma scheduler-key eller egen alert-key
+        - Kör evaluator + skickar mail
+
+    9i. Lägg in alert-steget i scheduler-flödet
+        - Fetch news
+        - Run analysis batches
+        - Run alerts
+
+    9j. Testa lokalt utan att skicka riktiga mail
+        - EmailProvider = Console/LogOnly
+        - Verifiera att rätt analyser skulle skickas
+
+    9k. Testa i Azure med riktig leverantör
+        - Lägg secrets/config i App Service
+        - Kör POST /api/alerts/run manuellt
+        - Verifiera att mail kommer fram
+
+    9l. Lägg till frontend/admin-inställningar senare
+        - Visa senaste skickade alerts
+        - Visa om alerts är enabled/disabled
+        - Möjlighet att ändra threshold senare
+
 10. Frontend/Admin för aktier
+    10a. Verifiera att frontend kör mot Azure API ✅
+    10b. Visa riktiga analyser från /api/analysis ✅
+    10c. Visa riktiga aktier från /api/stocks
+    10d. Lägg till aktie
+    10e. Redigera aktie
+    10f. Aktivera/inaktivera aktie
+    10g. Ta bort aktie
+    10h. Ändra sorteringsordning
+    10i. Visa loading/error/empty states
+    10j. Ta bort fallback mock data när API-flödet är stabilt
+    10k. Lägg till adminvy för schedulerstatus
+    10l. Lägg till adminvy för senaste fetcher-runs och analyser
+    10m. Lägg senare till alertinställningar
+
 11. Loggning + felhantering
+    11a. Strukturera backendloggar
+        - Fetcher started/completed/failed
+        - Analysis started/completed/failed
+        - Alert evaluation started/completed/failed
+
+    11b. Lägg till korrelations-id/run-id
+        - Koppla FetcherRun, analysis batch och alert run där det går
+
+    11c. Spara tekniska fel i databas där det är relevant
+        - FetcherRuns.ErrorMessage
+        - AlertNotifications.ErrorMessage
+        - Eventuellt AnalysisRun-logg senare
+
+    11d. Förbättra API-fel
+        - Returnera tydliga ProblemDetails
+        - Undvik att läcka secrets eller interna detaljer
+
+    11e. Lägg till Application Insights
+        - Backend API
+        - Azure Function
+        - Eventuellt frontend senare
+
+    11f. Lägg till health checks
+        - API lever
+        - Databas nåbar
+        - Scheduler config finns
+        - OpenAI/Finnhub config finns, utan att exponera nycklar
+
+    11g. Dokumentera felsökning
+        - Hur man testar API
+        - Hur man testar scheduler
+        - Hur man ser Function-loggar
+        - Hur man verifierar e-postutskick

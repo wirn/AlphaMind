@@ -1,9 +1,9 @@
-import { Clock3 } from 'lucide-react';
-import { ConfidenceBar } from './ConfidenceBar';
-import { DirectionBadge } from './DirectionBadge';
-import { ExpectedMove } from './ExpectedMove';
-import { ScoreRing } from './ScoreRing';
-import type { StockAnalysis } from '../types/stock';
+import { Clock3 } from "lucide-react";
+import { ConfidenceBar } from "./ConfidenceBar";
+import { DirectionBadge } from "./DirectionBadge";
+import { ExpectedMove } from "./ExpectedMove";
+import { ScoreRing } from "./ScoreRing";
+import type { StockAnalysis } from "../types/stock";
 
 interface AnalysisCardProps {
   analysis: StockAnalysis;
@@ -17,6 +17,7 @@ export function AnalysisCard({ analysis }: AnalysisCardProps) {
           <span className="ticker-chip">{analysis.ticker}</span>
           <h3>{analysis.companyName}</h3>
         </div>
+        <pre>test: {JSON.stringify(analysis)}</pre>
         <DirectionBadge direction={analysis.direction} />
       </div>
 
@@ -51,10 +52,10 @@ export function AnalysisCard({ analysis }: AnalysisCardProps) {
         <span>
           <Clock3 size={15} />
           {new Intl.DateTimeFormat(undefined, {
-            hour: '2-digit',
-            minute: '2-digit',
-            month: 'short',
-            day: 'numeric',
+            hour: "2-digit",
+            minute: "2-digit",
+            month: "short",
+            day: "numeric",
           }).format(new Date(analysis.analyzedAt))}
         </span>
         <span>{analysis.usedNewsCount} news items</span>
@@ -62,4 +63,3 @@ export function AnalysisCard({ analysis }: AnalysisCardProps) {
     </article>
   );
 }
-
