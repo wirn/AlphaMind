@@ -34,7 +34,6 @@ export function DashboardPage() {
       <PageHeader
         eyebrow="Live intelligence"
         title="Alpha Mind"
-        description="Neon-grade signal tracking for recent market news, impact strength and directional movement."
         meta={
           isLoading ? "Synchronizing" : `${filteredAnalyses.length} analyses`
         }

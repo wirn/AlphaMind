@@ -5,16 +5,20 @@ interface PageHeaderProps {
   meta?: string;
 }
 
-export function PageHeader({ eyebrow, title, description, meta }: PageHeaderProps) {
+export function PageHeader({
+  eyebrow,
+  title,
+  description,
+  meta,
+}: PageHeaderProps) {
   return (
     <header className="page-header">
       <div>
         <span className="eyebrow">{eyebrow}</span>
         <h1>{title}</h1>
-        <p>{description}</p>
+        {description ? <p>{description}</p> : null}
       </div>
       {meta ? <span className="page-header__meta">{meta}</span> : null}
     </header>
   );
 }
-
