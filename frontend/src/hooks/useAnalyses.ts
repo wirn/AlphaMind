@@ -75,8 +75,11 @@ export function useAnalyses() {
           year: 'numeric',
         }).format(new Date(`${date}T00:00:00Z`)),
         analyses: groupAnalyses.sort((a, b) => {
+          const byImpact = b.impactScore - a.impactScore;
+          const byConfidence = b.confidenceScore - a.confidenceScore;
           const byAnalyzedAt = new Date(b.analyzedAt).getTime() - new Date(a.analyzedAt).getTime();
-          return byAnalyzedAt || b.impactScore - a.impactScore;
+
+          return byImpact || byConfidence || byAnalyzedAt;
         }),
       }));
   }, [filteredAnalyses]);
