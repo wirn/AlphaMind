@@ -34,6 +34,7 @@ export function DashboardPage() {
       <PageHeader
         eyebrow="Live intelligence"
         title="Alpha Mind"
+        description=""
         meta={
           isLoading ? "Synchronizing" : `${filteredAnalyses.length} analyses`
         }
