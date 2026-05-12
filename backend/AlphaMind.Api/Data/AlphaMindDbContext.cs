@@ -13,6 +13,8 @@ public class AlphaMindDbContext(DbContextOptions<AlphaMindDbContext> options) : 
 
     public DbSet<StockAnalysis> StockAnalyses => Set<StockAnalysis>();
 
+    public DbSet<AlertNotification> AlertNotifications => Set<AlertNotification>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         var seedCreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -154,5 +156,23 @@ public class AlphaMindDbContext(DbContextOptions<AlphaMindDbContext> options) : 
 
         modelBuilder.Entity<StockAnalysis>()
             .HasIndex(analysis => analysis.ImpactScore);
+
+        modelBuilder.Entity<AlertNotification>()
+            .HasOne(notification => notification.StockAnalysis)
+            .WithMany()
+            .HasForeignKey(notification => notification.StockAnalysisId);
+
+        modelBuilder.Entity<AlertNotification>()
+            .HasIndex(notification => notification.StockAnalysisId);
+
+        modelBuilder.Entity<AlertNotification>()
+            .HasIndex(notification => notification.StockId);
+
+        modelBuilder.Entity<AlertNotification>()
+            .HasIndex(notification => new { notification.StockAnalysisId, notification.RecipientEmail })
+            .IsUnique();
+
+        modelBuilder.Entity<AlertNotification>()
+            .HasIndex(notification => notification.CreatedAtUtc);
     }
 }

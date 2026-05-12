@@ -4,6 +4,7 @@ using AlphaMind.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlphaMind.Api.Migrations
 {
     [DbContext(typeof(AlphaMindDbContext))]
-    partial class AlphaMindDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260512125339_AddAlertNotifications")]
+    partial class AddAlertNotifications
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

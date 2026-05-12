@@ -92,80 +92,17 @@
     8m. Dokumentera scheduler-konfiguration i README/appsettings-exempel ⬜
 
 9. E-post/alerts
-    9a. Bestäm e-postleverantör
-        - Förslag: SendGrid, Azure Communication Services Email eller SMTP
-        - Välj billig/gratis lösning för hobbyprojekt
-
-    9b. Skapa konfiguration för alerts
-        - AlertSettings:Enabled
-        - AlertSettings:MinImpactScore, t.ex. 80
-        - AlertSettings:Recipients
-        - AlertSettings:SenderEmail
-        - AlertSettings:SenderName
-
-    9c. Skapa datamodell för skickade alerts
-        - AlertNotification
-        - StockAnalysisId
-        - StockId
-        - Ticker
-        - RecipientEmail
-        - ImpactScore
-        - Direction
-        - SentAt
-        - Status
-        - ErrorMessage
-        - CreatedAt
-
-    9d. Skapa EF migration för AlertNotifications
-
-    9e. Skapa alert-evaluator
-        - Hämtar senaste StockAnalyses
-        - Filtrerar på impactScore >= threshold
-        - Undviker duplicerade utskick
-        - Tar hänsyn till direction om du vill, t.ex. positive/negative/mixed
-
-    9f. Skapa email-sender-service
-        - Interface: IEmailSender
-        - Implementation: vald leverantör
-        - Hantera disabled-läge för lokal utveckling
-
-    9g. Skapa e-postmall
-        - Ämne: AlphaMind alert: NVDA impact score 92
-        - Innehåll:
-          - Ticker och bolagsnamn
-          - Impact score
-          - Confidence score
-          - Direction
-          - Expected move
-          - Svensk sammanfattning
-          - Opportunities
-          - Risks
-          - Disclaimer: inte finansiell rådgivning
-
-    9h. Skapa skyddad endpoint
-        - POST /api/alerts/run
-        - Skyddas med samma scheduler-key eller egen alert-key
-        - Kör evaluator + skickar mail
-
-    9i. Lägg in alert-steget i scheduler-flödet
-        - Fetch news
-        - Run analysis batches
-        - Run alerts
-
-    9j. Testa lokalt utan att skicka riktiga mail
-        - EmailProvider = Console/LogOnly
-        - Verifiera att rätt analyser skulle skickas
-
-    9k. Testa i Azure med riktig leverantör
-        - Lägg secrets/config i App Service
-        - Kör POST /api/alerts/run manuellt
-        - Verifiera att mail kommer fram
-
-    9l. Lägg till frontend/admin-inställningar senare
-        - Visa senaste skickade alerts
-        - Visa om alerts är enabled/disabled
-        - Möjlighet att ändra threshold senare
-
+    9a. Skapa AlertSettings-konfiguration ✅
+    9b. Skapa AlertNotification-entitet ✅
+    9c. Skapa EF migration för AlertNotifications ✅
+    9d. Skapa alert evaluator-service ✅
+    9e. Skapa IEmailSender-interface ✅
+    9f. Implementera LogOnlyEmailSender ✅
+    9g. Skapa endpoint: POST /api/alerts/run ✅
+    9h. Testa alert-flöde lokalt ⬜
+    9i. Koppla alerts till scheduler-flödet ⬜
+    9j. Lägg till riktig e-postleverantör ⬜
+	
 10. Frontend/Admin för aktier
     10a. Verifiera att frontend kör mot Azure API ✅
     10b. Visa riktiga analyser från /api/analysis ✅

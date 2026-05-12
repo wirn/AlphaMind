@@ -17,7 +17,6 @@ export function AnalysisCard({ analysis }: AnalysisCardProps) {
           <span className="ticker-chip">{analysis.ticker}</span>
           <h3>{analysis.companyName}</h3>
         </div>
-        <pre>test: {JSON.stringify(analysis)}</pre>
         <DirectionBadge direction={analysis.direction} />
       </div>
 

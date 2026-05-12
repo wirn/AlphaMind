@@ -19,6 +19,8 @@ builder.Services.Configure<FinnhubOptions>(
     builder.Configuration.GetSection(FinnhubOptions.SectionName));
 builder.Services.Configure<OpenAiOptions>(
     builder.Configuration.GetSection(OpenAiOptions.SectionName));
+builder.Services.Configure<AlertSettings>(
+    builder.Configuration.GetSection(AlertSettings.SectionName));
 builder.Services.AddHttpClient<IFinnhubClient, FinnhubClient>(client =>
 {
     client.BaseAddress = new Uri("https://finnhub.io/api/v1/");
@@ -30,6 +32,8 @@ builder.Services.AddHttpClient<IOpenAiClient, OpenAiClient>(client =>
 builder.Services.AddScoped<StockNewsFetcher>();
 builder.Services.AddScoped<StockAnalysisPreviewService>();
 builder.Services.AddScoped<StockAnalysisRunService>();
+builder.Services.AddScoped<IEmailSender, LogOnlyEmailSender>();
+builder.Services.AddScoped<StockAlertService>();
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {
@@ -254,6 +258,32 @@ app.MapPost("/api/scheduler/run-analysis", async (
     return Results.Ok(summary);
 })
 .WithName("RunSchedulerAnalysis");
+
+app.MapPost("/api/alerts/run", async (
+    HttpContext httpContext,
+    IConfiguration configuration,
+    StockAlertService alertService,
+    CancellationToken cancellationToken) =>
+{
+    if (!IsSchedulerAuthorized(httpContext, configuration))
+    {
+        return Results.Unauthorized();
+    }
+
+    var result = await alertService.RunAsync(cancellationToken);
+
+    return Results.Ok(new
+    {
+        alertsEnabled = result.AlertsEnabled,
+        minImpactScore = result.MinImpactScore,
+        analysesMatched = result.AnalysesMatched,
+        notificationsCreated = result.NotificationsCreated,
+        notificationsSent = result.NotificationsSent,
+        notificationsFailed = result.NotificationsFailed,
+        skippedDuplicates = result.SkippedDuplicates
+    });
+})
+.WithName("RunAlerts");
 
 app.Run();
 
